@@ -572,29 +572,7 @@ ctrl c // to close process in bash
 	ctrl l 
 
 
-	cd source\repos
-	cd source\repos\smart-brain
-	cd source\repos\smart-brain-api
-
-	herman@gmail.com
-	cookies
 	
-	psql -U postgres postgres 	// to connect to the postgres database
-	\c smartbrain				// switch to smartbrain database
-
-	HServe\Shared Folders\Repos
-	HServe\Shared Folders\Users\Herman Adu
-	HServe\Shared Folders\Users\Sarah Adu
-
-	image links:
-
-	https://previews.123rf.com/images/potowizard/potowizard1405/potowizard140500012/28463194-spring-meadow-with-big-tree-with-fresh-green-leaves.jpg
-
-	https://i2-prod.mirror.co.uk/incoming/article14334083.ece/ALTERNATES/s810/3_Beautiful-girl-with-a-gentle-smile.jpg
-
-	http://www.jazzyherat.com/wp-content/uploads/2019/02/53123479_23843136539640391_3284952697794461696_n-1.png
-
-	http://www.jazzyherat.com/wp-content/uploads/2019/05/Cuttest-Baby-boy-With-Innocent-Eyes-Copy.jpg
 
 
 
