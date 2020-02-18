@@ -568,7 +568,8 @@ ctrl c // to close process in bash
 
 		git remote -v
 
-
+	clear terminal:
+	ctrl l 
 
 
 	cd source\repos
