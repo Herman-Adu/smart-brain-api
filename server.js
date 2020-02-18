@@ -22,12 +22,13 @@ const image = require('./controllers/image');
 	}
 });*/
 
-
+// heroku
 const db = knex({
 	client: 'pg',
 	connection: {
 	    host : process.env.DATABASE_URL,
 	    ssl: true,
+	}
 });
 
 /*db.select('*').from('users').then(data => {
