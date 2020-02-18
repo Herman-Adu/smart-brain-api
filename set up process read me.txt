@@ -1,0 +1,562 @@
+setup process
+
+cd source\repos\smart-brain
+cd source\repos\smart-brain-api
+
+// npm init -y to get package.json in node directory
+// npm install nodemon --save-dev to add dev dependencies to package.json
+
+// add packages
+
+// npm install express --save
+// npm install body-parser
+
+// add a new file - server.js - to the project
+
+// update package.json file to start nodeman server by pointing to the server.js file
+
+/*"scripts": {
+    "start": "nodemon server.js"
+  },*/
+
+// npm start
+
+package.json file
+
+{
+  "name": "smart-brain-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
+
+these are likely to change as i rn through building them:
+
+
+/*
+	planning out the api end-points/routes
+
+	1  you will want a end-point/route route that will be a GET request that for now responds with:
+
+		/ --> res = this is working
+
+	2. you will want a sign in endpoint/route that will be a POST request 
+	   to post user details as json to a variable on the server and respond with:
+
+		/signin --> POST  success or fail -- use post to protect user password etc.
+
+	3. you will want a register end-point/route that will be a POST request 
+	   to add new user information as json to a variable on the server and respond with:
+
+		/register --> POST new user object -- so i can see all is ok
+
+	4. you will want a profile end-point/route that will be a GET request to access user profile 
+	   and respond with an additional paramater of 'id', which will give each user their 
+	   own home screen with their profile details:
+
+		/profile/:userId --> GET user object
+
+	5. you will want a image end-point/route that will be a PUT request that will keep
+	   track everytime a user uploads an image and tracks whos uploaded the most and rank them,
+	   and respond 
+
+		/image/ --> PUT user object
+
+
+	summary:
+	/                --> res = this is working
+	/signin          --> POST  success or fail
+	/register        --> POST user object -- so i can see all is ok
+	/profile/:userId --> GET user object
+	/image/          --> PUT user object
+
+	*/
+
+		root end-point test:
+		
+		NB: remember when testing against different users, server.js signin function is hardcoded for the first user - database.users[0].
+		
+		GET: http://localhost:3000/ - end-point
+		
+		json needed to test root end-point - success
+		{
+			// no json needed
+		}
+		
+		returns:	
+		[
+			{
+				"id": "123",
+				"name": "herman",
+				"email": "herman@gmail.com",
+				"password": "cookies",
+				"entries": 0,
+				"joined": "2020-02-09T09:55:16.380Z"
+			},
+			{
+				"id": "124",
+				"name": "sarah",
+				"email": "sarah@gmail.com",
+				"password": "cream",
+				"entries": 0,
+				"joined": "2020-02-09T09:55:16.380Z"
+			}
+		]		
+		
+		signin end-point test:
+
+		POST: http://localhost:3000/signin - end-point
+
+		json to test sign process for database.users[0] - success
+		{
+			"email": "herman@gmail.com",
+			"password": "cookies"
+		}
+		
+		returns: success
+
+
+		json to test sign process for database.users[0] - fail
+		{
+			"email": "herm@gmail.com",
+			"password": "cookies"
+		}
+		
+		returns: success
+
+		json to test sign process for database.users[1] - success
+		{
+			"email": "sarah@gmail.com",
+			"password": "cream"
+		}
+		
+		returns: success
+
+		json to test sign process for database.users[1] - fail
+		{
+			"email": "sara@gmail.com",
+			"password": "cream"
+		}
+		
+		register end-point test:
+
+		POST: http://localhost:3000/register - end-point
+		
+		json to test register process for new user - success
+		{
+			"name": "Jeffery",
+			"email": "Jeffery.jackson@gmail.com",
+			"password": "password1"
+		}
+		
+		returns:	
+		{
+			"id": "125",
+			"name": "Jeffery",
+			"email": "Jeffery.jackson@gmail.com",
+			"password": "password1",
+			"entries": 0,
+			"joined": "2020-02-06T13:50:37.606Z"
+		}	
+		
+		profile end-point tests:
+		
+		POST: http://localhost:3000/profile/123 - end-point
+
+		json to test profile process for database.users[0]  - success
+		{
+			"id": "123"
+		}
+		
+		returns:	
+		{
+			"id": "123",
+			"name": "herman",
+			"email": "herman@gmail.com",
+			"password": "cookies",
+			"entries": 0,
+			"joined": "2020-02-09T09:55:16.380Z"
+		}
+		
+		POST: http://localhost:3000/profile/124 - end-point
+
+		json to test profile process for database.users[1] - success
+		{
+			"id": "124"
+		}
+		
+		returns:	
+		{
+			"id": "124",
+			"name": "sarah",
+			"email": "sarah@gmail.com",
+			"password": "cream",
+			"entries": 0,
+			"joined": "2020-02-09T09:55:16.380Z"
+		}
+		
+		image end-point tests:
+		
+		POST: http://localhost:3000/image - end-point
+
+		json to test profile process for database.users[0]  - success
+		{
+			"id": "123"
+		}
+		
+		returns rank:	
+		{
+			3
+		}
+		
+		POST: http://localhost:3000/image - end-point
+
+		json to test profile process for database.users[1]  - success
+		{
+			"id": "124"
+		}
+		
+		returns rank:	
+		{
+			5
+		}
+
+	*/
+	
+	
+	
+	/*
+		Databases:
+		
+		psql -U postgres postgres 	// to conect to the postgres database
+		
+		postgres=# create database test;	// creates a database called test
+		
+		postgres=# \l	// list all the databases
+		
+		   Name    |  Owner   | Encoding |           Collate           |            Ctype            |   Access privileges
+		-----------+----------+----------+-----------------------------+-----------------------------+-----------------------
+		 postgres  | postgres | UTF8     | English_United Kingdom.1252 | English_United Kingdom.1252 |
+		 template0 | postgres | UTF8     | English_United Kingdom.1252 | English_United Kingdom.1252 | =c/postgres          +
+				   |          |          |                             |                             | postgres=CTc/postgres
+		 template1 | postgres | UTF8     | English_United Kingdom.1252 | English_United Kingdom.1252 | =c/postgres          +
+				   |          |          |                             |                             | postgres=CTc/postgres
+		 test      | postgres | UTF8     | English_United Kingdom.1252 | English_United Kingdom.1252 |
+		(4 rows)
+		
+		Switching Between Databases in PostgreSQL:
+		
+		\c postgres
+		\c test
+		
+		
+		Create a new table:
+		
+		CREATE TABLE users( name text, age smallint, birthday date);
+		
+		Insert into the users table on the test# database:
+		
+		test#  INSERT INTO users (name, age, birthday) VALUES ('Herman', '47', '1972-10-10');
+		test#  INSERT INTO users (name, age, birthday) VALUES ('Sarah', '32', '1988-07-25');
+		test#  INSERT INTO users (name, age, birthday) VALUES ('karen', '29', '1991-02-05');
+		
+		Alter table add new column - score to the test# database:
+		
+		ALTER TABLE users ADD score smallint;
+		
+		UPdate the users table on the test# database:
+		
+		UPDATE users SET score = 50 WHERE name ='Herman';
+		
+		UPDATE users SET score = 25 WHERE name ='Sarah' OR name = 'karen'; 
+		
+		UPDATE users SET score = 19 WHERE name ='karen';
+		
+		Select the users whos name start with H on the test# database:
+		
+		SELECT * FROM users WHERE name like 'H%';
+		
+		  name  | age |  birthday  | score
+		--------+-----+------------+-------
+		 Herman |  47 | 1972-10-10 |    50
+		(1 row)
+		
+		SELECT * FROM users WHERE name like 'S%';
+		
+		 name  | age |  birthday  | score
+		-------+-----+------------+-------
+		 Sarah |  32 | 1988-07-25 |    25
+		(1 row)
+		
+		SELECT * FROM users WHERE name like 'k%';
+		
+		 name  | age |  birthday  | score
+		-------+-----+------------+-------
+		 karen |  29 | 1991-02-05 |    25
+		(1 row)
+		
+		Select the users whos name end with 'n' on the test# database:
+		
+		SELECT * FROM users WHERE name like '%n';
+		
+		  name  | age |  birthday  | score
+		--------+-----+------------+-------
+		 Herman |  47 | 1972-10-10 |    50
+		 karen  |  29 | 1991-02-05 |    25
+		 
+		 
+		 Order the users by their score on the test# database:
+		 
+		 SELECT * FROM users ORDER BY score DESC;
+		 
+		  name  | age |  birthday  | score
+		--------+-----+------------+-------
+		 Herman |  47 | 1972-10-10 |    50
+		 Sarah  |  32 | 1988-07-25 |    25
+		 karen  |  29 | 1991-02-05 |    25
+		(3 rows)
+
+		 SELECT * FROM users ORDER BY score ASC;
+		 
+	      name  | age |  birthday  | score
+		--------+-----+------------+-------
+		 Sarah  |  32 | 1988-07-25 |    25
+		 karen  |  29 | 1991-02-05 |    25
+		 Herman |  47 | 1972-10-10 |    50
+		(3 rows)
+
+		 
+		 Functions:
+		 
+		 Average - for exp - average score of users
+		 
+		 select avg(score) from users;
+				 avg
+		---------------------
+		 33.3333333333333333
+		(1 row)
+		 
+		Sum - for exp - sum score of users
+		
+		select sum(age) from users;
+		
+		 sum
+		-----
+		 108
+		(1 row)
+		
+		count - for exp - how many users in database
+		
+		select count(name) from users;
+		
+		 count
+		-------
+			 3
+		(1 row)
+		
+		Joining tables part 1:
+		
+		CREATE TABLE login(
+			ID serial NOT NULL PRIMARY KEY,
+			secret VARCHAR(100) NOT NULL,
+			name text UNIQUE NOT NULL
+		);
+		
+		INSERT INTO login(secret, name) VALUES ('abc', 'Herman');
+		
+		SELECT id, secret, name	FROM login;
+		
+		 id | secret |  name
+		----+--------+--------
+		  1 | abc    | Herman
+		(1 row)
+		
+		INSERT INTO login(secret, name) VALUES ('xyz', 'Sarah');
+		
+		SELECT * FROM login;
+		
+		 id | secret |  name
+		----+--------+--------
+		  1 | abc    | Herman
+		  2 | xyz    | Sarah
+		(2 rows)
+		
+		INSERT INTO login(secret, name) VALUES ('lol', 'karen');
+		
+		SELECT * FROM login;
+		
+		 id | secret |  name
+		----+--------+--------
+		  1 | abc    | Herman
+		  2 | xyz    | Sarah
+		  3 | lol    | karen
+		(3 rows)
+		
+		Joining tables part 2:
+		
+		SELECT * FROM users JOIN login ON users.name = login.name;
+		
+		  name  | age |  birthday  | score | id | secret |  name
+		--------+-----+------------+-------+----+--------+--------
+		 Herman |  47 | 1972-10-10 |    50 |  1 | abc    | Herman
+		 Sarah  |  32 | 1988-07-25 |    25 |  2 | xyz    | Sarah
+		 karen  |  29 | 1991-02-05 |    25 |  3 | lol    | karen
+		(3 rows)
+		
+		
+		SQL Delete From Drop Table:
+		
+		DELETE FROM users WHERE name = 'karen';
+		
+		DELETE 1 - karen no longer exist in the database
+		
+		SELECT * FROM users;
+		
+		  name  | age |  birthday  | score
+		--------+-----+------------+-------
+		 Herman |  47 | 1972-10-10 |    50
+		 Sarah  |  32 | 1988-07-25 |    25
+		(2 rows)
+		
+		DROP TABLE login;
+		
+		DROP TABLE - login table removed
+		
+		         List of relations
+		 Schema | Name  | Type  |  Owner
+		--------+-------+-------+----------
+		 public | users | table | postgres
+		(1 row)
+		
+		DROP TABLE users;
+		
+		DROP TABLE - users table removed
+		
+		\d
+		Did not find any relations.
+	*/
+	
+	/*
+		1.0 logon to postgres server:
+		
+			psql -U postgres postgres
+			Password for user postgres: Icec0@lz
+			psql (12.1)
+			postgres=#
+		
+		1.1 If database exist login:
+		
+			psql -U smartbrain postgres
+		
+		2.0 Create the Smart-Brain Database:
+		
+			create database smartbrain;	
+		
+		3.0 switch to the smartbrain database:
+		
+			\c smartbrain
+			
+			You are now connected to database "smartbrain" as user "postgres".
+			smartbrain=#
+		
+		
+		Create tables for smart-brain app
+		
+		Create a users table:
+		
+		CREATE TABLE users( 
+			id serial PRIMARY KEY,
+			name VARCHAR(100),
+			email text UNIQUE NOT NULL,
+			entries BIGINT DEFAULT 0,
+			joined TIMESTAMP NOT NULL
+		);
+		
+		Insert into the users table on the test# database:
+		
+		smartbrain=#  INSERT INTO users (id, name, email, entries, joined) VALUES (');		
+		
+		
+		Create a login table:
+		
+		CREATE TABLE login(
+			id serial PRIMARY KEY,
+			hash VARCHAR(100) NOT NULL,
+			email text UNIQUE NOT NULL
+		);
+		
+		INSERT INTO login(secret, name) VALUES ('abc', 'Herman');
+		
+		
+		
+		
+		
+	*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	cd source\repos
+	cd source\repos\smart-brain
+	cd source\repos\smart-brain-api
+
+	herman@gmail.com
+	cookies
+
+	HServe\Shared Folders\Repos
+	HServe\Shared Folders\Users\Herman Adu
+	HServe\Shared Folders\Users\Sarah Adu
+
+	image links:
+
+	https://previews.123rf.com/images/potowizard/potowizard1405/potowizard140500012/28463194-spring-meadow-with-big-tree-with-fresh-green-leaves.jpg
+
+	https://i2-prod.mirror.co.uk/incoming/article14334083.ece/ALTERNATES/s810/3_Beautiful-girl-with-a-gentle-smile.jpg
+
+	http://www.jazzyherat.com/wp-content/uploads/2019/02/53123479_23843136539640391_3284952697794461696_n-1.png
+
+	http://www.jazzyherat.com/wp-content/uploads/2019/05/Cuttest-Baby-boy-With-Innocent-Eyes-Copy.jpg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
