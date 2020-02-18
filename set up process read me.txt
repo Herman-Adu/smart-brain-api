@@ -235,13 +235,13 @@ these are likely to change as i rn through building them:
 		}
 
 	*/
-	
-	
+	psql -U postgres postgres 	// to conect to the postgres database
+	\c smartbrain				// switch to smartbrain database
 	
 	/*
 		Databases:
 		
-		psql -U postgres postgres 	// to conect to the postgres database
+		psql -U postgres postgres 	// to connect to the postgres database
 		
 		postgres=# create database test;	// creates a database called test
 		
@@ -459,7 +459,7 @@ these are likely to change as i rn through building them:
 		
 		1.1 If database exist login:
 		
-			psql -U smartbrain postgres
+			psql -U smartbrain smartbrain;
 		
 		2.0 Create the Smart-Brain Database:
 		
@@ -500,6 +500,11 @@ these are likely to change as i rn through building them:
 		
 		INSERT INTO login(secret, name) VALUES ('abc', 'Herman');
 		
+		update smart-brain-api with the following packages and make sure it was added to the json file
+		
+		install KNEX.js to connect api to database
+		install pg so we can connect to the postgres database
+		
 		
 		
 		
@@ -509,14 +514,59 @@ these are likely to change as i rn through building them:
 
 
 
+const postgres = knex({
+	client: 'pg',
+	connection: {
+	    host : '127.0.0.1',
+	    user : 'smart_brain',
+	    password : 'smartbrain',
+	    database : 'smartbrain'
+	}
+});
 
+/*postgres.select('*').from('users').then(data => {
+	console.log(data);
+});*/
 
+use bash to set environment variables
 
+ctrl c // to close process in bash
 
+	Add smart-brain-api project to git hub:
 
+	Create a new repository on GitHub. You can also add a gitignore file, a readme and a licence if you want Open Git Bash
 
+	Change the current working directory to your local project. Initialize the local directory as a Git repository.
+		
+		git init
 
+	Add the files in your new local repository. This stages them for the first commit.
+		
+		git add .
 
+	Commit the files that you’ve staged in your local repository.
+		
+		git commit -m "initial commit"
+
+	Copy the https url of your newly created repo.  
+
+		https://github.com/Herman-Adu/smart-brain-api.git
+
+	#In the Command prompt, add the URL for the remote repository where your local repository will be pushed.
+
+		git remote add origin https://github.com/Herman-Adu/smart-brain-api.git
+
+		git remote -v
+
+	Push the changes in your local repository to GitHub.
+
+		git push -f origin master
+
+	add upstream to keep fork up to date 
+		
+		git remote add upstream https://github.com/Herman-Adu/smart-brain-api.git
+
+		git remote -v
 
 
 
@@ -527,6 +577,9 @@ these are likely to change as i rn through building them:
 
 	herman@gmail.com
 	cookies
+	
+	psql -U postgres postgres 	// to connect to the postgres database
+	\c smartbrain				// switch to smartbrain database
 
 	HServe\Shared Folders\Repos
 	HServe\Shared Folders\Users\Herman Adu
