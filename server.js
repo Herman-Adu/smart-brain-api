@@ -12,16 +12,6 @@ const register = require('./controllers/register');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-/*const db = knex({
-	client: 'pg',
-	connection: {
-	    host : '127.0.0.1',
-	    user : 'smart_brain',
-	    password : 'smartbrain',
-	    database : 'smartbrain'
-	}
-});*/
-
 // heroku
 const db = knex({
 	client: 'pg',
@@ -30,10 +20,6 @@ const db = knex({
 	    ssl: true,
 	}
 });
-
-/*db.select('*').from('users').then(data => {
-	console.log(data);
-})*/
 
 const app = express();
 
@@ -56,13 +42,3 @@ app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
 app.listen(process.env.PORT || 3000, () => {
 	console.log(`app is running on port ${process.env.PORT}`)
 });
-
-/*	summary: end-points
-	/                --> GET   - returns all users from database
-	/signin          --> POST  - checks for a valid user in the database via the sign in details entered in to app 
-	/register        --> POST  - saves new user details to the users table and their login details to the login table in a transaction
-	/profile/:id     --> GET   - pulls user details out based on the user id
-	/image/          --> PUT   - updates entries by 1 every time you submit an image for face detection
-*/
-
-
